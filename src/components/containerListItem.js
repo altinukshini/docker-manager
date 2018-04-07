@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as classNames from 'classnames'
 import * as io from 'socket.io-client'
 
-const socket = io.connect('localhost:3001')
+const socket = io.connect('127.0.0.1:3001', () => console.log('Listening on localhost port 3001'))
 
 interface Container {
     id: string;
@@ -16,17 +16,19 @@ interface Container {
 }
 
 export class ContainerListItem extends React.Component<Container, {}> {
+
     constructor() {
         super()
         this.state = { blinker: "" }
     }
+
     // Helper method for determining whether the container is running or not
     isRunning() {
         return this.props.state === 'running'
     }
+
     onActionButtonClick() {
         this.setState({blinker: "blinker"})
-        console.log(this.state.blinker)
         const evt = this.isRunning() ? 'container.stop' : 'container.start'
         socket.emit(evt, { id: this.props.id })
     }

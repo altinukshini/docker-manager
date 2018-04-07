@@ -9,16 +9,20 @@
     "socket.io-client": "^2.1.0"
   },
   "scripts": {
-    "start": "node server & react-scripts start",
+    "start": "concurrently 'npm run server' 'npm run react'",
+    "react": "react-scripts start",
+    "server": "nodemon server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "classnames": "^2.2.5",
+    "concurrently": "^3.5.1",
     "dockerode": "^2.5.4",
     "express": "^4.16.3",
     "lodash": "^4.17.5",
+    "nodemon": "^1.17.3",
     "socket.io": "^2.1.0"
   }
 }
