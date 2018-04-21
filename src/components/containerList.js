@@ -3,19 +3,28 @@ import { Container, ContainerListItem } from './containerListItem'
 
 class ContainerListProps {
     containers: Container[];
-    title: string;
 }
 
 export class ContainerList extends React.Component<ContainerListProps, {}> {
     render() {
         return (
-            <div>
-                <h3>{this.props.title}</h3>
-                <p>{ this.props.containers.length === 0 ? "No containers to show" : "" }</p>
-                <div className="row">
-                    { this.props.containers.map(c => <ContainerListItem key={c.name} {...c} />) }
-                </div>
-            </div>
+                <table className="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>State</th>
+                        <th>Image</th>
+                        <th>IP Address</th>
+                        <th>Published Ports</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        { this.props.containers.length === 0 ? "No containers to show" : "" }
+                        { this.props.containers.map(c => <ContainerListItem key={c.name} {...c} />) }
+                    </tbody>
+                </table>
+
         )
     }
 }

@@ -4,7 +4,7 @@ import * as io from 'socket.io-client'
 
 const socket = io.connect('127.0.0.1:3001', () => console.log('Listening on localhost port 3001'))
 
-interface Container {
+class Container {
     id: string;
     name: string;
     image: string;
@@ -39,7 +39,9 @@ export class ContainerListItem extends React.Component<Container, {}> {
         const buttonText = this.isRunning() ? 'Stop' : 'Start'
         const buttonType = this.isRunning() ? 'btn-danger' : 'btn-success'
         const glyphiconState = this.isRunning() ? 'red' : 'green'
-        const glyphiconClass = classNames('power-button','glyphicon', 'glyphicon-off', 'pull-right', `${glyphiconState}`, this.state.blinker)
+        const glyphiconState2 = this.isRunning() ? 'fa-toggle-on' : 'fa-toggle-off'
+        const glyphiconTitle = this.isRunning() ? 'Power ON' : 'Power OFF'
+        const glyphiconClass = classNames('power-button','fas', `${glyphiconState2}`, 'pull-right', `${glyphiconState}`, this.state.blinker)
         const buttonClass = classNames('btn', `${buttonType}`, this.state.blinker)
         const ports = this.props.ports[0] ? this.props.ports[0]['IP'] +
             ":" + this.props.ports[0]['PublicPort'] +
@@ -48,26 +50,15 @@ export class ContainerListItem extends React.Component<Container, {}> {
             : "";
 
         return (
-            <div className="col-md-6">
-                <div className={ classes }>
-                    <div className="panel-heading">
-                        { this.props.name }
-                        <span className={ glyphiconClass } onClick={this.onActionButtonClick.bind(this)}></span>
-                    </div>
-                    <div className="panel-body">
-                        <b>ID</b>: {this.props.id}<br/>
-                        <b>Status</b>: {this.props.status}<br/>
-                        <b>Image</b>: {this.props.image}
-                        <hr/>
-                        <b>Network</b>: {this.props.network}<br/>
-                        <b>IP Address</b>: {this.props.ipaddress}<br/>
-                        <b>Ports</b>: { ports}
-                    </div>
-                    <div className="panel-footer">
-                        <button onClick={this.onActionButtonClick.bind(this)} className={ buttonClass }>{buttonText}</button>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td><a href={ "/container/" + this.props.id }>{ this.props.name }</a></td>
+                <td>{ this.props.status }</td>
+                <td>{ this.props.image }</td>
+                <td>{ this.props.ipaddress }</td>
+                <td>{ ports }</td>
+
+                <td><i style={{fontSize: '22px'}} title={ glyphiconTitle } className={ glyphiconClass } onClick={this.onActionButtonClick.bind(this)}></i></td>
+            </tr>
         )
     }
 }
