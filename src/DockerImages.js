@@ -34,7 +34,7 @@ export default class DockerImage extends React.Component {
     }
 
     exists(key:string){
-        return this.state.availableImages.some(item => item.repository[0] === key );
+        return this.state.availableImages.some(item => item.repository[0] === key || item.id.includes(key) );
     }
 
     onRun(name: String, type: String) {

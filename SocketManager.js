@@ -46,9 +46,8 @@ module.exports = function(socket) {
         })
 
         socket.on(DOCKER_RUN, args => {
-            docker.run(args.name, [], [process.stdout, process.stderr], {Tty:false}, function (err, data, container) {
+            docker.run(args.name, [], process.stdout, function (err, data, container) {
                 console.log(data);
-                console.log(err);
             });
         })
 
