@@ -1,6 +1,6 @@
 const docker = require('./DockerAPI')
 const io = require('./server').io
-const { CONTAINERS_LIST, CONTAINER_START, CONTAINER_STOP, IMAGE_RUN, IMAGE_ERROR } = require('./src/Events')
+const { CONTAINERS_LIST, IMAGES_LIST, CONTAINER_START, CONTAINER_STOP, DOCKER_RUN, DOCKER_PULL } = require('./src/Events')
 
 function refreshContainers() {
     docker.listContainers({ all: true}, (err, containers) => {
@@ -8,12 +8,23 @@ function refreshContainers() {
     })
 }
 
+function refreshImages() {
+    docker.listImages({ all: true}, (err, availableImages) => {
+        io.emit(IMAGES_LIST, availableImages)
+    })
+}
+
 setInterval(refreshContainers, 2000)
+setInterval(refreshImages, 2000)
 
 module.exports = function(socket) {
 
         socket.on(CONTAINERS_LIST, () => {
             refreshContainers()
+        })
+
+        socket.on(IMAGES_LIST, () => {
+            refreshImages()
         })
 
         socket.on(CONTAINER_START, args => {
@@ -34,16 +45,24 @@ module.exports = function(socket) {
             }
         })
 
-        socket.on(IMAGE_RUN, args => {
-            docker.createContainer({Image: args.name}, (err, container) => {
-                if (!err)
-                    container.start((err, data) => {
-                        if (err)
-                            socket.emit(IMAGE_ERROR, {message: err})
-                    })
-                else
-                    socket.emit(IMAGE_ERROR, {message: err})
-            })
+        socket.on(DOCKER_RUN, args => {
+            docker.run(args.name, [], [process.stdout, process.stderr], {Tty:false}, function (err, data, container) {
+                console.log(data);
+                console.log(err);
+            });
+        })
+
+        socket.on(DOCKER_PULL, args => {
+            docker.pull(args.name, function(err, stream) {
+                docker.modem.followProgress(stream, onFinished, onProgress);
+
+                function onFinished(err, output) {
+                    console.log(output)
+                }
+                function onProgress(event) {
+                    console.log(event)
+                }
+            });
         })
 
 }

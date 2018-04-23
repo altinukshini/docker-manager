@@ -20,7 +20,7 @@ export class ContainerList extends React.Component<ContainerListProps, {}> {
                     </tr>
                     </thead>
                     <tbody>
-                        { this.props.containers.length === 0 ? "No containers to show" : "" }
+                        { this.props.containers.length === 0 ? <tr><td>No containers to show</td></tr> : null }
                         { this.props.containers.map(c => <ContainerListItem key={c.name} {...c} />) }
                     </tbody>
                 </table>

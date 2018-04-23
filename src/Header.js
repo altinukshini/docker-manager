@@ -1,7 +1,9 @@
 import React from 'react';
 
 export default class Navigation extends React.Component {
+
     render() {
+
         return (<nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div className="container">
                 <a className="navbar-brand" href="/">Docker Dashboard</a>
@@ -10,13 +12,13 @@ export default class Navigation extends React.Component {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item active">
+                        <li className="nav-item">
                             <a className="nav-link" href="/">Dashboard
                                 <span className="sr-only">(current)</span>
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Images</a>
+                            <a className="nav-link" href="/images">Images</a>
                         </li>
                     </ul>
                 </div>

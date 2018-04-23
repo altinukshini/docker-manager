@@ -2,9 +2,21 @@ import * as React from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import Dashboard from './Dashboard'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import DockerImages from './DockerImages'
+import ContainerView from './ContainerView'
+import {Router, Route, Switch} from 'react-router-dom'
 
+import Callback from './Callback/Callback';
+import Auth from './Auth/Auth';
+import history from './history';
 
+const auth = new Auth();
+
+const handleAuthentication = (nextState, replace) => {
+    if (/access_token|id_token|error/.test(nextState.location.hash)) {
+        auth.handleAuthentication();
+    }
+}
 
 export class AppComponent extends React.Component {
 
@@ -12,13 +24,17 @@ export class AppComponent extends React.Component {
         return (
             <div>
                 <Header/>
-
-                <BrowserRouter>
+                <Router history={history} {...this.props}>
                     <Switch>
-                        <Route exact path="/" component={() => <Dashboard/>} />
+                        <Route exact path="/" component={(props) => <Dashboard auth={auth} {...props}/>} />
+                        <Route exact path="/images" component={(props) => <DockerImages auth={auth} {...props}/>} />
+                        <Route exact path="/container/:id" component={(props) => <ContainerView auth={auth} {...props}/>} />
+                        <Route path="/callback" render={(props) => {
+                            handleAuthentication(props);
+                            return <Callback {...props} />
+                        }}/>
                     </Switch>
-                </BrowserRouter>
-
+                </Router>
                 <Footer/>
             </div>
         );

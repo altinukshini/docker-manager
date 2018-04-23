@@ -34,17 +34,12 @@ export class ContainerListItem extends React.Component<Container, {}> {
     }
 
     render() {
-        const panelClass = this.isRunning() ? 'success' : 'default'
-        const classes = classNames('panel', `panel-${panelClass}`)
-        const buttonText = this.isRunning() ? 'Stop' : 'Start'
-        const buttonType = this.isRunning() ? 'btn-danger' : 'btn-success'
         const glyphiconState = this.isRunning() ? 'red' : 'green'
         const glyphiconState2 = this.isRunning() ? 'fa-toggle-on' : 'fa-toggle-off'
         const glyphiconTitle = this.isRunning() ? 'Power ON' : 'Power OFF'
         const glyphiconClass = classNames('power-button','fas', `${glyphiconState2}`, 'pull-right', `${glyphiconState}`, this.state.blinker)
-        const buttonClass = classNames('btn', `${buttonType}`, this.state.blinker)
-        const ports = this.props.ports[0] ? this.props.ports[0]['IP'] +
-            ":" + this.props.ports[0]['PublicPort'] +
+        const ports = this.props.ports[0] ? (this.props.ports[0]['IP'] ? this.props.ports[0]['IP'] : "-") +
+            ":" + (this.props.ports[0]['PublicPort'] ? this.props.ports[0]['PublicPort'] : "-") +
             " -> " + this.props.ports[0]['PrivatePort'] +
             "/" + this.props.ports[0]['Type']
             : "";

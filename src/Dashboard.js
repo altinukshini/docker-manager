@@ -12,7 +12,7 @@ class AppState {
     stoppedContainers: Container[]
 }
 
-export default class Body extends React.Component<{}, AppState> {
+export default class Dashboard extends React.Component<{}, AppState> {
 
     constructor() {
         super()
@@ -56,27 +56,61 @@ export default class Body extends React.Component<{}, AppState> {
         socket.emit('image.run', { name: name })
     }
 
+    goTo(route) {
+        this.props.history.replace(`/${route}`)
+    }
+
+    login() {
+        this.props.auth.login();
+    }
+
+    logout() {
+        this.props.auth.logout();
+    }
+
+
     render() {
+        const { isAuthenticated } = this.props.auth;
+
         return (
             <main className="container" role="main">
-                <div className="row">
-                    <div className="col-md-12">
-                        <h3>Running Containers</h3>
-                        <br/>
-                        <ContainerList containers={this.state.containers} />
-                    </div>
-                </div>
-                <br/>
-                <hr/>
-                <br/>
-                <div className="row">
-                    <div className="col-md-12">
-                        <h3>Stopped Containers</h3>
-                        <br/>
-                        <ContainerList containers={this.state.stoppedContainers} />
-                    </div>
-                </div>
+                    {
+                        !isAuthenticated() && (
+                            <h4>
+                                You are not logged in! Please{' '}
+                                <a href="#" style={{ cursor: 'pointer' }} onClick={this.login.bind(this)}>Log In</a>
+                                {' '}to continue.
+                            </h4>
+                        )
+                    }
+                    {
+                        isAuthenticated() && (
+                            <div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <button style={{ cursor: 'pointer', float: 'right', marginTop: '-20px', marginBottom: '20px' }} type="button" className="btn btn-link" onClick={this.logout.bind(this)}>Log out</button>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <h3>Running Containers</h3>
+                                        <br/>
+                                        <ContainerList containers={this.state.containers} />
+                                    </div>
+                                </div>
+                                <hr style={{marginBottom: '40px', marginTop:'40px'}}/>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <h3>Stopped Containers</h3>
+                                        <br/>
+                                        <ContainerList containers={this.state.stoppedContainers} />
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
             </main>
+
         );
     }
 }
