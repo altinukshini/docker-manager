@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as classNames from 'classnames'
 import * as io from 'socket.io-client'
+import { Link } from 'react-router-dom';
 
 const socket = io.connect('127.0.0.1:3001', () => console.log('Listening on localhost port 3001'))
 
@@ -46,11 +47,11 @@ export class ContainerListItem extends React.Component<Container, {}> {
 
         return (
             <tr>
-                <td><a href={ "/container/" + this.props.id }>{ this.props.name }</a></td>
+                <td><Link to={'/container/'+this.props.id}>{ this.props.name }</Link></td>
                 <td>{ this.props.status }</td>
                 <td>{ this.props.image }</td>
                 <td>{ this.props.ipaddress }</td>
-                <td>{ ports }</td>
+                <td>{ ports }</td>as
 
                 <td><i style={{fontSize: '22px'}} title={ glyphiconTitle } className={ glyphiconClass } onClick={this.onActionButtonClick.bind(this)}></i></td>
             </tr>

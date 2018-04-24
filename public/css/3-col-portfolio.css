@@ -35,3 +35,7 @@ body main.container {
 code {
   font-size: 80%;
 }
+
+dl dt {
+  background-color: #ebebeb;
+}

@@ -1,5 +1,6 @@
 module.exports = {
     CONTAINERS_LIST: "containers.list",
+    CONTAINER_GET: "container.get",
     IMAGES_LIST: "images.list",
     CONTAINER_STOP: "container.stop",
     CONTAINER_START: "container.start",

@@ -1,6 +1,6 @@
 const docker = require('./DockerAPI')
 const io = require('./server').io
-const { CONTAINERS_LIST, IMAGES_LIST, CONTAINER_START, CONTAINER_STOP, DOCKER_RUN, DOCKER_PULL } = require('./src/Events')
+const { CONTAINERS_LIST, IMAGES_LIST, CONTAINER_START, CONTAINER_STOP, DOCKER_RUN, DOCKER_PULL, CONTAINER_GET } = require('./src/Events')
 
 function refreshContainers() {
     docker.listContainers({ all: true}, (err, containers) => {
@@ -25,6 +25,17 @@ module.exports = function(socket) {
 
         socket.on(IMAGES_LIST, () => {
             refreshImages()
+        })
+
+        socket.on(CONTAINER_GET, args => {
+            const container = docker.getContainer(args.id)
+            if (container){
+                container.inspect(function (err, data) {
+                    console.log(data)
+                    io.emit(CONTAINER_GET, data)
+                });
+
+            }
         })
 
         socket.on(CONTAINER_START, args => {
