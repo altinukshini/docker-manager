@@ -51,7 +51,7 @@ export class ContainerListItem extends React.Component<Container, {}> {
                 <td>{ this.props.status }</td>
                 <td>{ this.props.image }</td>
                 <td>{ this.props.ipaddress }</td>
-                <td>{ ports }</td>as
+                <td>{ ports }</td>
 
                 <td><i style={{fontSize: '22px'}} title={ glyphiconTitle } className={ glyphiconClass } onClick={this.onActionButtonClick.bind(this)}></i></td>
             </tr>
