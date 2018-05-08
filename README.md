@@ -21,4 +21,14 @@ npm start
 ```
 this will start concurrently a node server that listens to the linux socket and communicates with docker api (default on port 3001) and the reactjs app on port 3000.
 
+I used Auth0, you may want to updated config variables in
 
+```
+src/Auth/auth0-variables.js
+```
+
+## Screenshots
+
+<img src="https://github.com/altinukshini/docker-manager/raw/master/scrsh1.png" alt="Screeshot1" />
+<img src="https://github.com/altinukshini/docker-manager/raw/master/scrsh2.png" alt="Screeshot2" />
+<img src="https://github.com/altinukshini/docker-manager/raw/master/scrsh3.png" alt="Screeshot3" />
